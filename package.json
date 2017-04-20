@@ -1,6 +1,6 @@
 {
-  "name": "z-conf",
-  "version": "0.1.1",
+  "name": "confz",
+  "version": "0.1.2",
   "description": "minimalistic in memory key-value config for node",
   "main": "index.js",
   "scripts": {
