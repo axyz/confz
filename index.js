@@ -1,3 +1,3 @@
-const Confz = require('lib/confz');
+const Confz = require('./lib/confz');
 
 module.exports = Confz;
