@@ -185,4 +185,43 @@ describe('Zconf', () => {
         ZCONF.extend('ddd:eee', { quux: false, fff: { baaz: 'vegas' } });
         assert.deepEqual(ZCONF.get('ddd'), { eee: { quux: false, fff: { baaz: 'vegas', ggg: 'test' } } });
     });
+
+    it('should not extend existing arrays', () => {
+        const ZCONF = new Zconf();
+        ZCONF.load({
+            foo: { bar: 'baz' },
+            aaa: { bbb: [1, 2, 3] },
+            ddd: { eee: { fff: { ggg: 'test' } } },
+        });
+
+        ZCONF.extend('aaa', { bbb: [4, 5, 6] });
+        assert.deepEqual(ZCONF.get('aaa'), { bbb: [4, 5, 6] });
+    });
+
+    it('should not extend existing strings', () => {
+        const ZCONF = new Zconf();
+        ZCONF.load({
+            foo: { bar: 'baz' },
+            aaa: { bbb: 'ccc' },
+            ddd: { eee: { fff: { ggg: 'test' } } },
+        });
+
+        ZCONF.extend('aaa', { bbb: 'zzz' });
+        assert.deepEqual(ZCONF.get('aaa'), { bbb: 'zzz' });
+    });
+
+    it('should not extend with non objects arguments', () => {
+        const ZCONF = new Zconf();
+        ZCONF.load({
+            foo: { bar: [1, 2, 3] },
+            aaa: { bbb: 'ccc' },
+            ddd: { eee: { fff: { ggg: 'test' } } },
+        });
+
+        ZCONF.extend('aaa', 'zzz');
+        assert.deepEqual(ZCONF.get('aaa'), { bbb: 'ccc' });
+
+        ZCONF.extend('foo:bar', [4, 5, 6]);
+        assert.deepEqual(ZCONF.get('foo'), { bar: [1, 2, 3] });
+    });
 });
