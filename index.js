@@ -1,3 +1,3 @@
-const Zconf = require('lib/z-conf');
+const Confz = require('lib/confz');
 
-module.exports = Zconf;
+module.exports = Confz;
