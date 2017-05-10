@@ -37,28 +37,28 @@ describe('Confz', () => {
     it('should handle non string keys', () => {
         const CONFZ = new Confz();
         CONFZ.set(null, 'foo');
-        assert.deepEqual(CONFZ.get(null), {});
+        assert.deepEqual(CONFZ.get(null), undefined);
         CONFZ.set(3, 'foo');
-        assert.deepEqual(CONFZ.get(3), {});
+        assert.deepEqual(CONFZ.get(3), undefined);
         CONFZ.set(undefined, 'foo');
-        assert.deepEqual(CONFZ.get(undefined), {});
+        assert.deepEqual(CONFZ.get(undefined), undefined);
         CONFZ.set(false, 'foo');
-        assert.deepEqual(CONFZ.get(false), {});
+        assert.deepEqual(CONFZ.get(false), undefined);
         CONFZ.set({}, 'foo');
-        assert.deepEqual(CONFZ.get({}), {});
+        assert.deepEqual(CONFZ.get({}), undefined);
     });
 
     it('should ignore empty paths', () => {
         const CONFZ = new Confz();
         CONFZ.set('', { foo: 'bar' });
-        assert.deepEqual(CONFZ.get(''), {});
+        assert.deepEqual(CONFZ.get(''), undefined);
     });
 
-    it('should return {} for non existent keys', () => {
+    it('should return undefined for non existent keys', () => {
         const CONFZ = new Confz();
 
-        assert.deepEqual(CONFZ.get('foo'), {});
-        assert.deepEqual(CONFZ.get('foo:bar'), {});
+        assert.deepEqual(CONFZ.get('foo'), undefined);
+        assert.deepEqual(CONFZ.get('foo:bar'), undefined);
 
         CONFZ.load({
             foo: { bar: 'baz' },
@@ -66,9 +66,9 @@ describe('Confz', () => {
             ddd: { eee: { fff: { ggg: 'test' } } },
         });
 
-        assert.deepEqual(CONFZ.get('a'), {});
-        assert.deepEqual(CONFZ.get('a:b:c:d:e:f'), {});
-        assert.deepEqual(CONFZ.get(''), {});
+        assert.equal(CONFZ.get('a'), undefined);
+        assert.equal(CONFZ.get('a:b:c:d:e:f'), undefined);
+        assert.equal(CONFZ.get(''), undefined);
     });
 
     it('should set and get nested keys', () => {
@@ -174,6 +174,7 @@ describe('Confz', () => {
             foo: { bar: 'baz' },
             aaa: { bbb: 'ccc' },
             ddd: { eee: { fff: { ggg: 'test' } } },
+            ccc: { xxx: [] },
         });
 
         CONFZ.extend('foo', { qux: true });
@@ -184,6 +185,9 @@ describe('Confz', () => {
 
         CONFZ.extend('ddd:eee', { quux: false, fff: { baaz: 'vegas' } });
         assert.deepEqual(CONFZ.get('ddd'), { eee: { quux: false, fff: { baaz: 'vegas', ggg: 'test' } } });
+
+        CONFZ.extend('ccc', { xxx: ['ciao'] });
+        assert.deepEqual(CONFZ.get('ccc'), { xxx: ['ciao'] });
     });
 
     it('should not extend existing arrays', () => {
