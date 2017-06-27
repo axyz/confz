@@ -1,6 +1,6 @@
 {
   "name": "confz",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "minimalistic in memory key-value config for node",
   "main": "index.js",
   "scripts": {
